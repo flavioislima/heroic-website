@@ -1,11 +1,13 @@
 import { NextPage } from 'next'
 import React from 'react'
-import { getLatestReleases, ReleaseUrls } from './api/github'
-import styles from '../styles/Home.module.css'
+import { getLatestReleases, ReleaseUrls } from './../api/github'
+import styles from '../../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import i18next from 'i18next'
+import DownloadsPageArticleCard from '../../components/DownloadsPageArticleCard'
 
-const Downloads: NextPage = () => {
+const Downloads = () => {
   const router = useRouter()
 
   const userAgent = global.window?.navigator?.userAgent || ''
@@ -35,55 +37,48 @@ const Downloads: NextPage = () => {
 
   function handleDownload(version: string) {
     setTimeout(() => {
-      router.push('/donate')
+      router.push(`/${i18next.language}/donate`)
     }, 3000)
   }
 
   return (
     <>
       <Head>
-        <title>Download Heroic</title>
-        <meta
-          name="description"
-          content="An Open Source GOG and Epic Games Launcher"
-        />
+        <title>{i18next.t('Download.title')}</title>
+        <meta name="description" content={i18next.t('Download.meta_desc')} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className="hero">
         <div className="container">
-          <h1>Download</h1>
-          <p>Heroic is available for all Major operating systems.</p>
+          <h1>{i18next.t('Download.Download')}</h1>
+          <p>{i18next.t('Download.AvailableFor')}</p>
 
           <hr className="spacer" />
 
           <details open={isLinux}>
             <summary>Linux</summary>
             <div className="grid">
-              <article className={styles.downloadBoxes}>
-                <h4>Flatpak</h4>
-                <p>
-                  Get the best Heroic experience on any Linux distribution or on
-                  the Steam Deck via Flatpak.
-                </p>
-                <footer>
-                  <a href="https://flathub.org/apps/details/com.heroicgameslauncher.hgl">
-                    <strong onClick={() => handleDownload('flatpak')}>
-                      Get from Flathub
-                    </strong>
-                  </a>
-                </footer>
-              </article>
-              <article className={styles.downloadBoxes}>
-                <h4>AppImage</h4>
-                <p>
-                  Download it in AppImage format so it will work on any Linux
-                  distro. The AppImage can update itself when a new version is
-                  released.
-                </p>
-                <footer className="downloadLink">
+              <DownloadsPageArticleCard
+                className={styles.downloadBoxes}
+                articleTitle="Flatpack"
+                articleDescription={i18next.t('Download.Linux.Flatpack_desc')}
+              >
+                <a href="https://flathub.org/apps/details/com.heroicgameslauncher.hgl">
+                  <strong onClick={() => handleDownload('flatpak')}>
+                    {i18next.t('Download.Linux.Flatpack_get')}
+                  </strong>
+                </a>
+              </DownloadsPageArticleCard>
+
+              <DownloadsPageArticleCard
+                className={styles.downloadBoxes}
+                articleTitle="AppImage"
+                articleDescription={i18next.t('Download.Linux.AppImage_desc')}
+              >
+                <>
                   <a href={releases.Linux}>
                     <strong onClick={() => handleDownload('appimage-stable')}>
-                      Stable
+                      {i18next.t('Download.Stable')}
                     </strong>
 
                     <span className="smallText">
@@ -93,45 +88,42 @@ const Downloads: NextPage = () => {
                   {releases.LinuxBeta && (
                     <a href={releases.LinuxBeta}>
                       <strong onClick={() => handleDownload('appimage-beta')}>
-                        Beta
+                        {i18next.t('Download.Beta')}
                       </strong>
                       <span className="smallText">
                         {` (${releases.LinuxBeta.split('/')[7] ?? ''})`}
                       </span>
                     </a>
                   )}
-                </footer>
-              </article>
-              <article className={styles.downloadBoxes}>
-                <h4>Other</h4>
-                <p>
-                  Heroic is also distributed in RPM, DEB and a TAR.XZ file.
-                  Check for alternative repos in our Github.
-                </p>
-                <footer>
-                  <a href="https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/latest">
-                    <strong onClick={() => handleDownload('all-packages')}>
-                      See all
-                    </strong>
-                  </a>
-                </footer>
-              </article>
+                </>
+              </DownloadsPageArticleCard>
+
+              <DownloadsPageArticleCard
+                className={styles.downloadBoxes}
+                articleTitle={i18next.t('Download.Other')}
+                articleDescription={i18next.t('Download.Linux.Other_desc')}
+              >
+                <a href="https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/latest">
+                  <strong onClick={() => handleDownload('all-packages')}>
+                    {i18next.t('Download.See_all')}
+                  </strong>
+                </a>
+              </DownloadsPageArticleCard>
             </div>
           </details>
 
           <details open={isWindows}>
             <summary>Windows</summary>
             <div className="grid">
-              <article className={styles.downloadBoxes}>
-                <h4>Setup</h4>
-                <p>
-                  Install Heroic on your system and get auto-updates when a new
-                  version is released. Next, Next, Finish!
-                </p>
-                <footer>
+              <DownloadsPageArticleCard
+                className={styles.downloadBoxes}
+                articleTitle={i18next.t('Download.Setup')}
+                articleDescription={i18next.t('Download.Windows.Setup_desc')}
+              >
+                <>
                   <a href={releases.Windows}>
                     <strong onClick={() => handleDownload('windows-stable')}>
-                      Stable
+                      {i18next.t('Download.Stable')}
                     </strong>
                     <span className="smallText">
                       {` (${releases.Windows.split('/')[7] ?? ''})`}
@@ -140,27 +132,27 @@ const Downloads: NextPage = () => {
                   {releases.WindowsBeta && (
                     <a href={releases.WindowsBeta}>
                       <strong onClick={() => handleDownload('windows-beta')}>
-                        Beta
+                        {i18next.t('Download.Beta')}
                       </strong>
                       <span className="smallText">
                         {` (${releases.WindowsBeta.split('/')[7] ?? ''})`}
                       </span>
                     </a>
                   )}
-                </footer>
-              </article>
-              <article className={styles.downloadBoxes}>
-                <h4>Portable</h4>
-                <p>
-                  Use the portable version in case you do not want the full
-                  installation. You will still have all the features included.
-                </p>
-                <footer>
+                </>
+              </DownloadsPageArticleCard>
+
+              <DownloadsPageArticleCard
+                className={styles.downloadBoxes}
+                articleTitle={i18next.t('Download.Portable')}
+                articleDescription={i18next.t('Download.Windows.Portable_desc')}
+              >
+                <>
                   <a href={releases.WindowsPortable}>
                     <strong
                       onClick={() => handleDownload('windows-portable-stable')}
                     >
-                      Stable
+                      {i18next.t('Download.Stable')}
                     </strong>
                     <span className="smallText">
                       {` (${releases.WindowsPortable.split('/')[7] ?? ''})`}
@@ -171,7 +163,7 @@ const Downloads: NextPage = () => {
                       <strong
                         onClick={() => handleDownload('windows-portable-beta')}
                       >
-                        Beta
+                        {i18next.t('Download.Beta')}
                       </strong>
                       <span className="smallText">
                         {` (${
@@ -180,24 +172,23 @@ const Downloads: NextPage = () => {
                       </span>
                     </a>
                   )}
-                </footer>
-              </article>
+                </>
+              </DownloadsPageArticleCard>
             </div>
           </details>
 
           <details open={isMac}>
             <summary>MacOS</summary>
             <div className="grid">
-              <article className={styles.downloadBoxes}>
-                <h4>Intel Chips</h4>
-                <p>
-                  Optimized for Intel Chips. Open it and copy the Heroic App to
-                  the Applications folder and you are good to go!
-                </p>
-                <footer>
+              <DownloadsPageArticleCard
+                className={styles.downloadBoxes}
+                articleTitle={i18next.t('Download.MacOS.IntelChips')}
+                articleDescription={i18next.t('Download.MacOS.IntelChips_desc')}
+              >
+                <>
                   <a href={releases.Mac}>
                     <strong onClick={() => handleDownload('mac-stable')}>
-                      Stable
+                      {i18next.t('Download.Stable')}
                     </strong>
                     <span className="smallText">
                       {` (${releases.Mac.split('/')[7]})`}
@@ -206,28 +197,26 @@ const Downloads: NextPage = () => {
                   {releases.MacBeta && (
                     <a href={releases.MacBeta}>
                       <strong onClick={() => handleDownload('mac-beta')}>
-                        Beta
+                        {i18next.t('Download.Beta')}
                       </strong>
                       <span className="smallText">
-                        {` (${releases.MacBeta.split('/')[7] ?? ''})`}
+                        {` (${releases.Mac.split('/')[7]})`}
                       </span>
                     </a>
                   )}
-                </footer>
-              </article>
-              <article className={styles.downloadBoxes}>
-                <h4>Apple Chips (M1/M2)</h4>
-                <p>
-                  Might need to run this command on the terminal to make it
-                  work:
-                  <code>
-                    xattr -r -d com.apple.quarantine /Applications/Heroic.app
-                  </code>
-                </p>
-                <footer>
+                </>
+              </DownloadsPageArticleCard>
+
+              <DownloadsPageArticleCard
+                className={styles.downloadBoxes}
+                articleTitle={i18next.t('Download.MacOS.AppleChips')}
+                articleDescription={i18next.t('Download.MacOS.AppleChips_desc')}
+                sampleCode="xattr -r -d com.apple.quarantine /Applications/Heroic.app"
+              >
+                <>
                   <a href={releases.MacArm}>
                     <strong onClick={() => handleDownload('mac-stable')}>
-                      Stable
+                      {i18next.t('Download.Stable')}
                     </strong>
                     <span className="smallText">
                       {` (${releases.MacArm.split('/')[7]})`}
@@ -236,15 +225,15 @@ const Downloads: NextPage = () => {
                   {releases.MacArmBeta && (
                     <a href={releases.MacArmBeta}>
                       <strong onClick={() => handleDownload('mac-beta')}>
-                        Beta
+                        {i18next.t('Download.Beta')}
                       </strong>
                       <span className="smallText">
-                        {` (${releases.MacArmBeta.split('/')[7] ?? ''})`}
+                        {` (${releases.MacArm.split('/')[7]})`}
                       </span>
                     </a>
                   )}
-                </footer>
-              </article>
+                </>
+              </DownloadsPageArticleCard>
             </div>
           </details>
         </div>

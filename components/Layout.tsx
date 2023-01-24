@@ -7,6 +7,7 @@ type Props = {
 }
 
 export const Layout = ({ children }: Props) => {
+  
   return (
     <>
       <Navbar />

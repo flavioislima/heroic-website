@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import React from 'react'
+import i18next from '../components/i18next'
 
 const logo = require('../assets/logo.png')
 import {
@@ -10,13 +11,16 @@ import {
   faMastodon
 } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useRouter } from 'next/router'
+
 
 export default function Navbar() {
+
   return (
     <nav className="container-fluid">
       <ul>
         <li>
-          <Link href="/" passHref>
+          <Link href={`/${i18next.language}/`} passHref>
             <span className="contrast link">
               <img
                 src={logo}
@@ -33,7 +37,7 @@ export default function Navbar() {
         <li>
           <a
             rel="me"
-            title="Heroic Mastodon Page"
+            title={i18next.t("Navbar.Heroic_Mastodon_Page")}
             href="https://mastodon.social/@heroiclauncher"
           >
             <FontAwesomeIcon
@@ -47,7 +51,7 @@ export default function Navbar() {
         <li>
           <a
             href="https://twitter.com/HeroicLauncher"
-            title="Heroic Twitter Page"
+            title={i18next.t("Navbar.Heroic_Twitter_Page")}
           >
             <FontAwesomeIcon
               icon={faTwitter}
@@ -60,7 +64,7 @@ export default function Navbar() {
         <li>
           <a
             href="https://github.com/Heroic-Games-Launcher"
-            title="Heroic GitHub Page"
+            title={i18next.t("Navbar.Heroic_GitHub_Page")}
           >
             <FontAwesomeIcon
               icon={faGithub}
@@ -73,7 +77,7 @@ export default function Navbar() {
         <li>
           <a
             href="https://discord.com/invite/rHJ2uqdquK"
-            title="Heroic Discord Server"
+            title={i18next.t("Navbar.Heroic_Discord_Server")}
           >
             <FontAwesomeIcon
               icon={faDiscord}
@@ -84,15 +88,15 @@ export default function Navbar() {
           </a>
         </li>
         <li>
-          <Link href="/faq">FAQ</Link>
+          <Link href={`/${i18next.language}/faq`}>FAQ</Link>
         </li>
         <li>
           <a href="https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/wiki">
-            Documentation
+            {i18next.t("Navbar.Documentation")}
           </a>
         </li>
         <li>
-          <Link href="/donate">Support Us</Link>
+          <Link href={`/${i18next.language}/donate`}>{i18next.t("Navbar.Support_Us")}</Link>
         </li>
       </ul>
     </nav>
